@@ -1,0 +1,25 @@
+cmake_minimum_required (VERSION 2.6)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if (NOT WIN32)
+  set(CMAKE_CXX_COMPILER "clang++")
+endif()
+
+project (Kraken_Cube)
+
+add_executable(kraken_cube main.cpp)
+
+IF(APPLE)
+   # SET(GUI_TYPE MACOSX_BUNDLE)
+   # INCLUDE_DIRECTORIES ( /Developer/Headers/FlatCarbon )
+   FIND_LIBRARY(APPKIT_LIBRARY AppKit)
+   FIND_LIBRARY(KRAKEN_LIBRARY kraken PATHS ${CMAKE_SOURCE_DIR}/../kraken/macos/ NO_DEFAULT_PATH)
+   MARK_AS_ADVANCED (APPKIT_LIBRARY
+                     KRAKEN_LIBRARY)
+   SET(EXTRA_LIBS ${APPKIT_LIBRARY} ${KRAKEN_LIBRARY} )
+ENDIF (APPLE)
+
+TARGET_LINK_LIBRARIES( kraken_cube ${EXTRA_LIBS} )
+
